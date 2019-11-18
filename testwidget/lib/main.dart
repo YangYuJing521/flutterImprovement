@@ -222,7 +222,7 @@ class ShoppingListItem extends StatelessWidget {
 
   ShoppingListItem({Product product, this.inCart, this.onCartChange})
       : product = product,
-      super(key: ObjectKey(product));
+      super(key: ObjectKey(product));//object key，oc中的itentifier理解为重用
   //参数带_ 为私有
   final Product product;
   final bool inCart;
@@ -284,6 +284,29 @@ class _ShoppingListState extends State<ShoppingList> {
       }
     });
   }
+
+
+  ///响应widget生命周期事件
+  /*
+  在StatefulWidget调用createState之后，框架将新的状态对象插入树中，然后调用状态对象的initState。
+   子类化State可以重写initState，以完成仅需要执行一次的工作。
+    例如，您可以重写initState以配置动画或订阅platform services。
+    initState的实现中需要调用super.initState。*/
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  // }
+
+  /*当一个状态对象不再需要时，框架调用状态对象的dispose。 您可以覆盖该dispose方法来执行清理工作。
+  例如，您可以覆盖dispose取消定时器或取消订阅platform services。
+   dispose典型的实现是直接调用super.dispose。*/
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  // }
+
 
   @override
   Widget build(BuildContext context) {
