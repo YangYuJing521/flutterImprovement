@@ -38,7 +38,6 @@ class StatelessContainer extends StatelessWidget {
   }
 }
 
-
 class StatefulContainer extends StatefulWidget {
   StatefulContainer({Key key}) : super(key: key);
   @override
@@ -57,9 +56,35 @@ class _StatefulContainerState extends State<StatefulContainer> {
   }
 }
 
+// TODO global key practice
+class SwitchScreen extends StatefulWidget {
+  //接受key
+  SwitchScreen({Key key}) : super(key: key);
+  _SwitchScreenState createState() => _SwitchScreenState();
+}
+
+class _SwitchScreenState extends State<SwitchScreen> {
+  bool isActive = false;
+  @override
+  Widget build(BuildContext context) { 
+    return Switch.adaptive(
+      value: isActive,
+      onChanged: (bool currentState){
+        setState(() {
+          isActive = currentState;
+        });
+      },
+    );
+  }
+
+  changeState() {
+    setState(() {
+      isActive = !isActive;
+    });
+  }
+}
 
 class MyHomePage extends StatefulWidget {
-  //接受key
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
   @override
@@ -97,6 +122,9 @@ List<Widget> widgets;
 
   }
 
+  //global key
+  final GlobalKey<_SwitchScreenState> gKey = GlobalKey<_SwitchScreenState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,13 +132,17 @@ List<Widget> widgets;
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: widgets,
-        ),
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: widgets,
+        // ),
+        
+        //global key
+        child: SwitchScreen(key: gKey,),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: switchWidget,
+        // onPressed: switchWidget,//交换颜色块
+        onPressed: switchSwitch,  //更改switch状态
         tooltip: 'change',
         child: Icon(Icons.import_export),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -121,7 +153,7 @@ List<Widget> widgets;
     return oldWidget.runtimeType == newWidget.runtimeType
         && oldWidget.key == newWidget.key;
   }
-  //点击事件
+  //点击事件 交换字块
   switchWidget(){
     setState(() {
     bool canUpdate = canBeUpdate(widgets[0], widgets[1]);
@@ -137,6 +169,13 @@ List<Widget> widgets;
     print(key1);
     print(key2);
     widgets.insert(0, widgets.removeAt(1));
+    });
+  }
+
+  //点击事件 global key
+  switchSwitch() {
+    setState(() {
+      gKey.currentState.changeState();
     });
   }
 }
