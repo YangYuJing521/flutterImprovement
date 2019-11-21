@@ -25,21 +25,22 @@ Color getRandomColor() {
     Random.secure().nextInt(255));
 }
 
-
-// class StatelessContainer extends StatelessWidget {
-//   final Color randomCol = getRandomColor();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 100,
-//       height: 100,
-//       color: randomCol,
-//     );
-//   }
-// }
+class StatelessContainer extends StatelessWidget {
+  StatelessContainer({Key key}) : super(key: key);
+  final Color randomCol = getRandomColor();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100,
+      height: 100,
+      color: randomCol,
+    );
+  }
+}
 
 
 class StatefulContainer extends StatefulWidget {
+  StatefulContainer({Key key}) : super(key: key);
   @override
   _StatefulContainerState createState() => _StatefulContainerState();
 }
@@ -58,6 +59,7 @@ class _StatefulContainerState extends State<StatefulContainer> {
 
 
 class MyHomePage extends StatefulWidget {
+  //接受key
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
   @override
@@ -71,7 +73,28 @@ List<Widget> widgets;
   @override
   void initState() {
     super.initState();
-    widgets =  [StatefulContainer(), StatefulContainer()];
+    widgets =  [
+      // StatefulContainer(key: UniqueKey(),),
+      // StatefulContainer(key: UniqueKey(),)
+
+      // StatefulContainer(),
+      // StatefulContainer()
+
+      // StatelessContainer(),
+      // StatelessContainer()
+
+      Padding(
+        key: UniqueKey(),
+        padding: const EdgeInsets.all(8.0),
+        child: StatefulContainer(),
+      ),
+      Padding(
+        key: UniqueKey(),
+        padding: const EdgeInsets.all(8.0),
+        child: StatefulContainer(),
+      )
+      ];
+
   }
 
   @override
@@ -93,10 +116,29 @@ List<Widget> widgets;
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  bool canBeUpdate(Widget oldWidget, Widget newWidget) {
+    return oldWidget.runtimeType == newWidget.runtimeType
+        && oldWidget.key == newWidget.key;
+  }
   //点击事件
   switchWidget(){
     setState(() {
-      widgets.insert(0, widgets.removeAt(1));
+    bool canUpdate = canBeUpdate(widgets[0], widgets[1]);
+    print(canUpdate);
+
+    Type type1 = widgets[0].runtimeType;
+    Type type2 = widgets[1].runtimeType;
+    Key key1 = widgets[0].key;
+    Key key2 = widgets[1].key;
+    
+    print(type1);
+    print(type2);
+    print(key1);
+    print(key2);
+    widgets.insert(0, widgets.removeAt(1));
     });
   }
 }
+
+ 
