@@ -13,8 +13,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,
       ),
-      home: HomePage(),
-      // routes: ,
+      // home: HomePage(),  // becomes the route named '/'
+      routes: <String, WidgetBuilder>{
+        '/': (BuildContext context) => HomePage(),
+      },
     );
 
     

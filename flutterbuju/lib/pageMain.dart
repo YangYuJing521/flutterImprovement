@@ -1,6 +1,84 @@
 
 import 'package:flutter/material.dart';
 
+class TitleSection extends StatefulWidget {
+  _FavariteWidgetState createState() => _FavariteWidgetState();
+}
+
+class _FavariteWidgetState extends State<TitleSection> {
+  bool _isFavourite = true;
+  int _favaoriteCount = 41;
+
+  void _touchFavourite() {
+    setState(() {
+      if (_isFavourite) {
+        _favaoriteCount -= 1;
+        _isFavourite = false;
+      } else {
+        _favaoriteCount += 1;
+        _isFavourite = true;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+//标题行中的最后两项是一个红色的星形图标和文字“41”。将整行放在容器中，并沿着每个边缘填充32像素
+      padding: EdgeInsets.all(32.0),
+      //行
+      child: Row(
+        children: <Widget>[
+          Expanded(//expanded自动填充空余
+            child: Column(//正副标题是一个列
+              crossAxisAlignment: CrossAxisAlignment.start,  //左对齐
+              children: <Widget>[
+                //将第一行文本放入Container中，然后底部添加8像素填充
+                //如果要添加填充，边距，边框或背景色，请使用Container来设置
+                Container(//正标题，带底部间距
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text('Oeschinen Lake Campground',style: TextStyle(fontWeight: FontWeight.bold),),
+                ),
+                //副标题
+                Text('Kandersteg, Switzerland',style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ),
+           //五角星
+          //  Icon(
+          //    Icons.star,
+          //    color: Colors.red
+          //  ),
+          //  Text('41')
+          Row(
+            mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(0.0),
+          child: IconButton(
+            // icon: Icon(Icons.star),
+            icon: _isFavourite? Icon(Icons.star):Icon(Icons.star_border),
+            color: Colors.red[500],
+            onPressed: _touchFavourite,
+          ),
+        ),
+        SizedBox(
+          width: 18.0,
+          child: Container(
+            child: Text('$_favaoriteCount'),
+          ),
+        )
+      ],
+    )
+        ],
+      ),
+    );
+
+     
+  }
+}
+
 class HomePage extends StatelessWidget {
 
        /*Flutter布局机制的核心就是widget。在Flutter中，几乎所有东西都是一个widget - 甚至布局模型都是widget。
@@ -27,36 +105,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     //TODO 标题行
-    Widget titleSection = Container(
-      //标题行中的最后两项是一个红色的星形图标和文字“41”。将整行放在容器中，并沿着每个边缘填充32像素
-      padding: EdgeInsets.all(32.0),
-      //行
-      child: Row(
-        children: <Widget>[
-          Expanded(//expanded自动填充空余
-            child: Column(//正副标题是一个列
-              crossAxisAlignment: CrossAxisAlignment.start,  //左对齐
-              children: <Widget>[
-                //将第一行文本放入Container中，然后底部添加8像素填充
-                //如果要添加填充，边距，边框或背景色，请使用Container来设置
-                Container(//正标题，带底部间距
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text('Oeschinen Lake Campground',style: TextStyle(fontWeight: FontWeight.bold),),
-                ),
-                //副标题
-                Text('Kandersteg, Switzerland',style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-          ),
-           //五角星
-           Icon(
-             Icons.star,
-             color: Colors.red
-           ),
-           Text('41')
-        ],
-      ),
-    );
+    // Widget titleSection = Container(
+      
+    // );
 
     // TODO 创建按钮行的私有方法
     //由于构建每个列的代码几乎是相同的，因此使用一个嵌套函数，如buildButtonColumn,
@@ -120,7 +171,7 @@ class HomePage extends StatelessWidget {
             height: 240.0,
             fit: BoxFit.cover,
           ),
-          titleSection,
+          TitleSection(),
           buttonSection,
           textSection,
         ],
